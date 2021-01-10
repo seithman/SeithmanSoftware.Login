@@ -109,7 +109,7 @@ namespace SeithmanSoftware.Login.Controller
             }
 
             CryptoHelper.HashNewPassword(createUserRequest.Password, out byte[] pwSalt, out byte[] pwHash);
-            var newUserData = new NewUserData()
+            var newUserData = new Database.Models.CreateUserRequest()
             {
                 UserName = createUserRequest.UserName,
                 Email = createUserRequest.Email,
@@ -150,7 +150,7 @@ namespace SeithmanSoftware.Login.Controller
 
             CryptoHelper.HashNewPassword(changePasswordRequest.Password, out byte[] pwSalt, out byte[] pwHash);
 
-            await _userRepository.ChangePassword(new NewPasswordData() { Id = token.OwnerId, PwHash = pwHash, PwSalt = pwSalt });
+            await _userRepository.ChangePassword(new Database.Models.ChangePasswordRequest() { Id = token.OwnerId, PwHash = pwHash, PwSalt = pwSalt });
             return Ok();
         }
 
