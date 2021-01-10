@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SeithmanSoftware.Login.Database.SqlServer\SeithmanSoftware.Login.Database.SqlServer.csproj" />
     <ProjectReference Include="..\SeithmanSoftware.Login.Database\SeithmanSoftware.Login.Database.csproj" />
   </ItemGroup>
 

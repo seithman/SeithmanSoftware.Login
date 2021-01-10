@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeithmanSoftware.Login.Clie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeithmanSoftware.Login.Client.Test", "SeithmanSoftware.Login.Client.Test\SeithmanSoftware.Login.Client.Test.csproj", "{E6A61CCE-9DF2-4018-9088-9DC744F9E0C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeithmanSoftware.Login.Controller.Api", "SeithmanSoftware.Login.Controller.Api\SeithmanSoftware.Login.Controller.Api.csproj", "{CF136760-81EC-4A0E-92F2-E99465665133}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeithmanSoftware.Login.Controller.Api", "SeithmanSoftware.Login.Controller.Api\SeithmanSoftware.Login.Controller.Api.csproj", "{CF136760-81EC-4A0E-92F2-E99465665133}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeithmanSoftware.Login.Database.SqlServer", "SeithmanSoftware.Login.Database.SqlServer\SeithmanSoftware.Login.Database.SqlServer.csproj", "{4F50A876-F52C-4BFC-AA9C-A36AB6E6DE1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{CF136760-81EC-4A0E-92F2-E99465665133}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF136760-81EC-4A0E-92F2-E99465665133}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF136760-81EC-4A0E-92F2-E99465665133}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F50A876-F52C-4BFC-AA9C-A36AB6E6DE1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F50A876-F52C-4BFC-AA9C-A36AB6E6DE1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F50A876-F52C-4BFC-AA9C-A36AB6E6DE1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F50A876-F52C-4BFC-AA9C-A36AB6E6DE1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
