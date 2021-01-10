@@ -38,7 +38,7 @@ namespace SeithmanSoftware.Login.Client
         {
             get
             {
-                if (!string.IsNullOrEmpty(token) && (tokenExpires.AddMinutes(5) > DateTime.UtcNow))
+                if (!string.IsNullOrEmpty(token) && (tokenExpires < DateTime.UtcNow.AddMinutes(5)))
                 {
                     RefreshToken().Wait();
                 }
