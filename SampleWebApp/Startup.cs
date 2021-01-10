@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using SeithmanSoftware.Login.Controller;
+using SeithmanSoftware.Login.Database.SqlServer;
 
 namespace SampleWebApp
 {
@@ -20,7 +21,7 @@ namespace SampleWebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddUserControllerServices();
+            services.AddUserDatabaseSqlDependency();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -36,8 +37,9 @@ namespace SampleWebApp
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SampleWebApp v1"));
-                app.UseHttpsRedirection();
             }
+
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 

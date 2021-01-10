@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SeithmanSoftware.Login.Controller\SeithmanSoftware.Login.Controller.csproj" />
+    <ProjectReference Include="..\SeithmanSoftware.Login.Database.SqlServer\SeithmanSoftware.Login.Database.SqlServer.csproj" />
   </ItemGroup>
 
 </Project>

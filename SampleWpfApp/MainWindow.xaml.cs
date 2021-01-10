@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SeithmanSoftware.Login.Database;
+using SeithmanSoftware.Login.Database.SqlServer;
 using System.IO;
 
 namespace SampleWpfApp
