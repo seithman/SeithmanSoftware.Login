@@ -34,6 +34,18 @@ namespace SeithmanSoftware.Login.Client
 
         public bool TokenExpired => tokenExpires < DateTime.UtcNow;
 
+        public string Token
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(token) && (tokenExpires.AddMinutes(5) > DateTime.UtcNow))
+                {
+                    RefreshToken().Wait();
+                }
+                return token;
+            }
+        }
+
         public async Task<TokenInfo> GetTokenInfo (string accessToken)
         {
             using var client = GetHttpClient();
@@ -51,18 +63,18 @@ namespace SeithmanSoftware.Login.Client
                 return tokenInfo;
             }
 
-            DispatchEvent(OnError, new UserClientErrorEventArgs($"Error getting token info: ${response.StatusCode} : {responseContent}"));
+            DispatchEvent(OnError, new UserClientErrorEventArgs($"Error getting token info: {response.StatusCode} : {responseContent}"));
             return null;
         }
 
         public async Task<int> GetUser(string userNameOrEmail)
         {
             using var client = GetHttpClient();
-            var response = await client.GetAsync($"{baseUrl}/api/usr/${WebUtility.UrlEncode(userNameOrEmail)}");
+            var response = await client.GetAsync($"{baseUrl}/api/user/{WebUtility.UrlEncode(userNameOrEmail)}");
             var content = await response.Content.ReadAsStringAsync();
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var userInfo = JsonSerializer.Deserialize<UserId>(content);
+                var userInfo = JsonSerializer.Deserialize<UserId>(content, jsonSerializerOptions);
                 return userInfo?.Id ?? -1;
             }
             else if (response.StatusCode != HttpStatusCode.NotFound)
@@ -75,11 +87,11 @@ namespace SeithmanSoftware.Login.Client
         public async Task<int>GetUser(int id)
         {
             using var client = GetHttpClient();
-            var response = await client.GetAsync($"{baseUrl}/api/usr/${id}");
+            var response = await client.GetAsync($"{baseUrl}/api/user/{id}");
             var content = await response.Content.ReadAsStringAsync();
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var userInfo = JsonSerializer.Deserialize<UserId>(content);
+                var userInfo = JsonSerializer.Deserialize<UserId>(content, jsonSerializerOptions);
                 return userInfo?.Id ?? -1;
             }
             else if (response.StatusCode != HttpStatusCode.NotFound)
@@ -97,7 +109,7 @@ namespace SeithmanSoftware.Login.Client
             }
             var accessTokenRequest = new AccessTokenRequest()
             {
-                AccessToken = this.token
+                AccessToken = token
             };
             using var client = GetHttpClient();
             var content = GetHttpContent(JsonSerializer.Serialize<AccessTokenRequest>(accessTokenRequest, jsonSerializerOptions));
@@ -130,7 +142,7 @@ namespace SeithmanSoftware.Login.Client
             };
             using var client = GetHttpClient();
             var requestContent = GetHttpContent(JsonSerializer.Serialize<CreateUserRequest>(createUserRequest, jsonSerializerOptions));
-            var response = await client.PostAsync($"{baseUrl}/api/usr/create", requestContent);
+            var response = await client.PostAsync($"{baseUrl}/api/user/create", requestContent);
             var responseContent = await response.Content.ReadAsStringAsync();
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -159,7 +171,7 @@ namespace SeithmanSoftware.Login.Client
             };
             using var client = GetHttpClient();
             var requestContent = GetHttpContent(JsonSerializer.Serialize<LoginRequest>(loginRequest, jsonSerializerOptions));
-            var response = await client.PostAsync($"{baseUrl}/api/usr/login", requestContent);
+            var response = await client.PostAsync($"{baseUrl}/api/user/login", requestContent);
             var responseContent = await response.Content.ReadAsStringAsync();
 
             if (response.StatusCode == HttpStatusCode.OK)
@@ -188,12 +200,12 @@ namespace SeithmanSoftware.Login.Client
 
             var changePasswordRequest = new ChangePasswordRequest()
             {
-                AccessToken = token,
+                AccessToken = Token,
                 Password = newPassword
             };
 
             using var client = GetHttpClient();
-            var response = await client.PutAsync($"{baseUrl}/api/user/password", GetHttpContent(JsonSerializer.Serialize<ChangePasswordRequest>(changePasswordRequest)));
+            var response = await client.PutAsync($"{baseUrl}/api/user/password", GetHttpContent(JsonSerializer.Serialize<ChangePasswordRequest>(changePasswordRequest, jsonSerializerOptions)));
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -218,7 +230,7 @@ namespace SeithmanSoftware.Login.Client
 
             using var Client = GetHttpClient();
             var requestContent = GetHttpContent(JsonSerializer.Serialize<LogOutRequest>(logOutRequest));
-            var request = new HttpRequestMessage(HttpMethod.Delete, $"{baseUrl}/api/question/logout") { Content = requestContent };
+            var request = new HttpRequestMessage(HttpMethod.Delete, $"{baseUrl}/api/user/logout") { Content = requestContent };
             var response = await Client.SendAsync(request);
 
             if (response.StatusCode != HttpStatusCode.OK)
@@ -257,7 +269,7 @@ namespace SeithmanSoftware.Login.Client
 
         protected static HttpClient GetHttpClient()
         {
-            using var client = new HttpClient();
+            var client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             return client;
         }
@@ -265,7 +277,7 @@ namespace SeithmanSoftware.Login.Client
         protected static HttpContent GetHttpContent(string jsonString)
         {
             var content = new StringContent(jsonString);
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json; charset=utf-8");
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             return content;
         }
 

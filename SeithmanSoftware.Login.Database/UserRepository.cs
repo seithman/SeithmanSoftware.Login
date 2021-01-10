@@ -37,7 +37,7 @@ namespace SeithmanSoftware.Login.Database
         {
             using var connection = new SqlConnection(_connectionSTring);
             await connection.OpenAsync();
-            await connection.ExecuteAsync("EXEC dbo.User_ChangePassword @Id = @Id, @PwSalt = @PwSalt, @PwHash = @PwHas", newPasswordData);
+            await connection.ExecuteAsync("EXEC dbo.User_ChangePassword @Id = @Id, @PwSalt = @PwSalt, @PwHash = @PwHash", newPasswordData);
         }
 
         /// <summary>
