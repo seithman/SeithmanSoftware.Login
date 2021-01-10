@@ -2,8 +2,14 @@
 
 namespace SeithmanSoftware.Login.Controller.Api
 {
-    public class AccessTokenRequest
+    /// <summary>
+    /// Data for refreshing an acces token
+    /// </summary>
+    public class RefreshTokenRequest
     {
+        /// <summary>
+        /// The access token to refresh
+        /// </summary>
         [Required(ErrorMessage = "You must provide an access token.")]
         public string AccessToken { get; set; }
     }

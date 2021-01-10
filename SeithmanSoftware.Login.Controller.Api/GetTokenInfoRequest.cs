@@ -3,14 +3,14 @@
 namespace SeithmanSoftware.Login.Controller.Api
 {
     /// <summary>
-    /// Request data for logging out of a session
+    /// Data for requesting information about an acces token
     /// </summary>
-    public class LogOutRequest
+    public class GetTokenInfoRequest
     {
         /// <summary>
-        /// The current access token for the session
+        /// The access token to get information about
         /// </summary>
         [Required(ErrorMessage = "You must provide an access token.")]
-        public string Token { get; set; }
+        public string AccessToken { get; set; }
     }
 }

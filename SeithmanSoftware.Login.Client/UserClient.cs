@@ -46,11 +46,11 @@ namespace SeithmanSoftware.Login.Client
             }
         }
 
-        public async Task<TokenInfo> GetTokenInfo (string accessToken)
+        public async Task<GetTokenInfoResponse> GetTokenInfo (string accessToken)
         {
             using var client = GetHttpClient();
-            var accessTokenRequest = new AccessTokenRequest() { AccessToken = accessToken };
-            var content = GetHttpContent(JsonSerializer.Serialize<AccessTokenRequest>(accessTokenRequest, jsonSerializerOptions));
+            var getTokenInfoRequest = new GetTokenInfoRequest() { AccessToken = accessToken };
+            var content = GetHttpContent(JsonSerializer.Serialize<GetTokenInfoRequest>(getTokenInfoRequest, jsonSerializerOptions));
             var request = new HttpRequestMessage(HttpMethod.Get, $"{baseUrl}/api/user")
             {
                 Content = content
@@ -59,7 +59,7 @@ namespace SeithmanSoftware.Login.Client
             var responseContent = await response.Content.ReadAsStringAsync();
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var tokenInfo = JsonSerializer.Deserialize<TokenInfo>(responseContent, jsonSerializerOptions);
+                var tokenInfo = JsonSerializer.Deserialize<GetTokenInfoResponse>(responseContent, jsonSerializerOptions);
                 return tokenInfo;
             }
 
@@ -74,7 +74,7 @@ namespace SeithmanSoftware.Login.Client
             var content = await response.Content.ReadAsStringAsync();
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var userInfo = JsonSerializer.Deserialize<UserIdResponse>(content, jsonSerializerOptions);
+                var userInfo = JsonSerializer.Deserialize<GetUserResponse>(content, jsonSerializerOptions);
                 return userInfo?.Id ?? -1;
             }
             else if (response.StatusCode != HttpStatusCode.NotFound)
@@ -91,7 +91,7 @@ namespace SeithmanSoftware.Login.Client
             var content = await response.Content.ReadAsStringAsync();
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var userInfo = JsonSerializer.Deserialize<UserIdResponse>(content, jsonSerializerOptions);
+                var userInfo = JsonSerializer.Deserialize<GetUserResponse>(content, jsonSerializerOptions);
                 return userInfo?.Id ?? -1;
             }
             else if (response.StatusCode != HttpStatusCode.NotFound)
@@ -107,12 +107,12 @@ namespace SeithmanSoftware.Login.Client
             {
                 return false;
             }
-            var accessTokenRequest = new AccessTokenRequest()
+            var refreshTokenRequest = new RefreshTokenRequest()
             {
                 AccessToken = token
             };
             using var client = GetHttpClient();
-            var content = GetHttpContent(JsonSerializer.Serialize<AccessTokenRequest>(accessTokenRequest, jsonSerializerOptions));
+            var content = GetHttpContent(JsonSerializer.Serialize<RefreshTokenRequest>(refreshTokenRequest, jsonSerializerOptions));
             var response = await client.PostAsync($"{baseUrl}/api/user", content);
             var responseContent = await response.Content.ReadAsStringAsync();
 
@@ -146,7 +146,7 @@ namespace SeithmanSoftware.Login.Client
             var responseContent = await response.Content.ReadAsStringAsync();
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var userId = JsonSerializer.Deserialize<UserIdResponse>(responseContent, jsonSerializerOptions);
+                var userId = JsonSerializer.Deserialize<CreateUserResponse>(responseContent, jsonSerializerOptions);
                 return userId?.Id ?? -1;
             }
             else if (response.StatusCode == HttpStatusCode.Conflict)

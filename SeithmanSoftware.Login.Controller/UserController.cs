@@ -30,13 +30,13 @@ namespace SeithmanSoftware.Login.Controller
         }
 
         [HttpGet]
-        public async Task<ActionResult<TokenInfo>> GetTokenInfo([Required(ErrorMessage = "You must provide an access token")] AccessTokenRequest accessTokenRequest)
+        public async Task<ActionResult<GetTokenInfoResponse>> GetTokenInfo([Required(ErrorMessage = "You must provide an access token")] GetTokenInfoRequest getTokenInfoRequest)
         {
-            if (accessTokenRequest == null)
+            if (getTokenInfoRequest == null)
             {
                 return BadRequest();
             }
-            var getTokenResponse = await _userRepository.GetToken(accessTokenRequest.AccessToken);
+            var getTokenResponse = await _userRepository.GetToken(getTokenInfoRequest.AccessToken);
             var validationResult = await ValidateToken(getTokenResponse);
 
             if (validationResult != TokenValidationResult.Ok)
@@ -44,7 +44,7 @@ namespace SeithmanSoftware.Login.Controller
                 return NotFound();
             }
 
-            return new TokenInfo()
+            return new GetTokenInfoResponse()
             {
                 OwnerId = getTokenResponse.OwnerId,
                 Expires = getTokenResponse.Expires,
@@ -54,7 +54,7 @@ namespace SeithmanSoftware.Login.Controller
         }
 
         [HttpGet("{userNameOrEmail}")]
-        public async Task<ActionResult<UserIdResponse>> GetUser(string userNameOrEmail)
+        public async Task<ActionResult<GetUserResponse>> GetUser(string userNameOrEmail)
         {
             UserData user;
             if (int.TryParse(userNameOrEmail, out int id))
@@ -71,13 +71,13 @@ namespace SeithmanSoftware.Login.Controller
                 return NotFound();
             }
 
-            return new UserIdResponse() { Id = user.Id };
+            return new GetUserResponse() { Id = user.Id };
         }
 
         [HttpPost]
-        public async Task<ActionResult<LoginResponse>> RefreshToken(AccessTokenRequest accessTokenRequest)
+        public async Task<ActionResult<LoginResponse>> RefreshToken(RefreshTokenRequest refreshTokenRequest)
         {
-            var getTokenResponse = await _userRepository.GetToken(accessTokenRequest.AccessToken);
+            var getTokenResponse = await _userRepository.GetToken(refreshTokenRequest.AccessToken);
             var validationResult = await ValidateToken(getTokenResponse);
 
             if (validationResult != TokenValidationResult.Ok)
@@ -95,7 +95,7 @@ namespace SeithmanSoftware.Login.Controller
 
         // POST api/<UserContoller>/create
         [HttpPost("create")]
-        public async Task<ActionResult<UserIdResponse>> CreateUser(CreateUserRequest createUserRequest)
+        public async Task<ActionResult<CreateUserResponse>> CreateUser(CreateUserRequest createUserRequest)
         {
             var user = await _userRepository.GetUserByUserNameOrEmail(createUserRequest.UserName);
             if (user != null)
@@ -117,7 +117,7 @@ namespace SeithmanSoftware.Login.Controller
                 PwHash = pwHash
             };
             var result = await _userRepository.CreateUser(newUserData);
-            return new UserIdResponse() { Id = result?.Id ?? -1 };
+            return new CreateUserResponse() { Id = result?.Id ?? -1 };
         }
 
         // POST api/<UserContoller>/login

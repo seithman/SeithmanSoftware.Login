@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace SeithmanSoftware.Login.Controller.Api
 {
-    public class UserIdResponse
+    /// <summary>
+    /// Response data for creating a user
+    /// </summary>
+    public class CreateUserResponse
     {
+        /// <summary>
+        /// The ID of the user
+        /// </summary>
         public int Id { get; set; }
     }
 }
