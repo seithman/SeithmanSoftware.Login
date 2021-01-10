@@ -9,7 +9,7 @@ using SeithmanSoftware.Login.Database.Models;
 namespace SeithmanSoftware.Login.Controller
 {
     using Helpers;
-    using Models;
+    using Api;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -54,7 +54,7 @@ namespace SeithmanSoftware.Login.Controller
         }
 
         [HttpGet("{userNameOrEmail}")]
-        public async Task<ActionResult<UserId>> GetUser(string userNameOrEmail)
+        public async Task<ActionResult<UserIdResponse>> GetUser(string userNameOrEmail)
         {
             UserData user;
             if (int.TryParse(userNameOrEmail, out int id))
@@ -71,7 +71,7 @@ namespace SeithmanSoftware.Login.Controller
                 return NotFound();
             }
 
-            return new UserId() { Id = user.Id };
+            return new UserIdResponse() { Id = user.Id };
         }
 
         [HttpPost]
@@ -95,7 +95,7 @@ namespace SeithmanSoftware.Login.Controller
 
         // POST api/<UserContoller>/create
         [HttpPost("create")]
-        public async Task<ActionResult<UserId>> CreateUser(CreateUserRequest createUserRequest)
+        public async Task<ActionResult<UserIdResponse>> CreateUser(CreateUserRequest createUserRequest)
         {
             var user = await _userRepository.GetUserByUserNameOrEmail(createUserRequest.UserName);
             if (user != null)
@@ -117,7 +117,7 @@ namespace SeithmanSoftware.Login.Controller
                 PwHash = pwHash
             };
             var result = await _userRepository.CreateUser(newUserData);
-            return new UserId() { Id = result?.Id ?? -1 };
+            return new UserIdResponse() { Id = result?.Id ?? -1 };
         }
 
         // POST api/<UserContoller>/login

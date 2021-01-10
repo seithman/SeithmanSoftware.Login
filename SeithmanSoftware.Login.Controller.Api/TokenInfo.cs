@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SeithmanSoftware.Login.Controller.Models
+namespace SeithmanSoftware.Login.Controller.Api
 {
     public class TokenInfo
     {
