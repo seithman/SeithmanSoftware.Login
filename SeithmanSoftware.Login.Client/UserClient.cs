@@ -4,10 +4,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
+using SeithmanSoftware.Login.Controller.Api;
 
 namespace SeithmanSoftware.Login.Client
 {
-    using Models;
     using Json;
     using Events;
 
@@ -74,7 +74,7 @@ namespace SeithmanSoftware.Login.Client
             var content = await response.Content.ReadAsStringAsync();
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var userInfo = JsonSerializer.Deserialize<UserId>(content, jsonSerializerOptions);
+                var userInfo = JsonSerializer.Deserialize<UserIdResponse>(content, jsonSerializerOptions);
                 return userInfo?.Id ?? -1;
             }
             else if (response.StatusCode != HttpStatusCode.NotFound)
@@ -91,7 +91,7 @@ namespace SeithmanSoftware.Login.Client
             var content = await response.Content.ReadAsStringAsync();
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var userInfo = JsonSerializer.Deserialize<UserId>(content, jsonSerializerOptions);
+                var userInfo = JsonSerializer.Deserialize<UserIdResponse>(content, jsonSerializerOptions);
                 return userInfo?.Id ?? -1;
             }
             else if (response.StatusCode != HttpStatusCode.NotFound)
@@ -146,7 +146,7 @@ namespace SeithmanSoftware.Login.Client
             var responseContent = await response.Content.ReadAsStringAsync();
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var userId = JsonSerializer.Deserialize<UserId>(responseContent, jsonSerializerOptions);
+                var userId = JsonSerializer.Deserialize<UserIdResponse>(responseContent, jsonSerializerOptions);
                 return userId?.Id ?? -1;
             }
             else if (response.StatusCode == HttpStatusCode.Conflict)
