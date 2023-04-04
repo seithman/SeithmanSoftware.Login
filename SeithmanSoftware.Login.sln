@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30804.86
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeithmanSoftware.Login.Database", "SeithmanSoftware.Login.Database\SeithmanSoftware.Login.Database.csproj", "{B7DDA50F-72A1-4DAB-AA54-5F98E10A1497}"
 EndProject
@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeithmanSoftware.Login.Clie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeithmanSoftware.Login.Controller.Api", "SeithmanSoftware.Login.Controller.Api\SeithmanSoftware.Login.Controller.Api.csproj", "{CF136760-81EC-4A0E-92F2-E99465665133}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeithmanSoftware.Login.Database.SqlServer", "SeithmanSoftware.Login.Database.SqlServer\SeithmanSoftware.Login.Database.SqlServer.csproj", "{4F50A876-F52C-4BFC-AA9C-A36AB6E6DE1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeithmanSoftware.Login.Database.SqlServer", "SeithmanSoftware.Login.Database.SqlServer\SeithmanSoftware.Login.Database.SqlServer.csproj", "{4F50A876-F52C-4BFC-AA9C-A36AB6E6DE1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
